@@ -1,17 +1,12 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMovie, setCurrentPageMovies, setGenres } from '../../redux/actions/moviesAction';
+import { fetchMovies, fetchGenres } from '../../redux/actions/moviesAction';
 import TitleComponent from '../../SubComponents/TitleComponent';
 import MovieCard from '../../SubComponents/MovieCard';
 import Pagination from '../../SubComponents/Pagination';
 import headerImg from '../../assets/images/head.jpg';
 
 const MoviesPage = () => {
-    const apiKey = 'aec7a120efc0f2607c66f43ac96e5187';
-    const baseUrl = 'https://api.themoviedb.org/3/movie/popular';
-    const searchUrl = 'https://api.themoviedb.org/3/search/movie';
-    const genreUrl = 'https://api.themoviedb.org/3/genre/movie/list';
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState('');
@@ -21,37 +16,16 @@ const MoviesPage = () => {
     const genres = useSelector((state) => state.movies.genres);
 
     useEffect(() => {
-        const fetchGenres = () => {
-            axios.get(`${genreUrl}?api_key=${apiKey}`)
-                .then(response => {
-                    dispatch(setGenres(response.data.genres));
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        };
-
-        fetchGenres();
+        dispatch(fetchGenres());
     }, [dispatch]);
 
     useEffect(() => {
-        const fetchMovies = () => {
-            const url = isSearching
-                ? `${searchUrl}?api_key=${apiKey}&query=${search}&page=${page}`
-                : `${baseUrl}?api_key=${apiKey}&page=${page}`;
-
-            axios.get(url)
-                .then(response => {
-                    dispatch(setMovie(response.data.results));
-                    dispatch(setCurrentPageMovies(response.data.results));
-                    setTotalPages(response.data.total_pages);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+        const fetchData = async () => {
+            const totalPagesFromAPI = await dispatch(fetchMovies(page, search, isSearching));
+            setTotalPages(totalPagesFromAPI);
         };
 
-        fetchMovies();
+        fetchData();
     }, [page, search, isSearching, dispatch]);
 
     const handlePageChange = (newPage) => {
@@ -133,7 +107,6 @@ const MoviesPage = () => {
 
             <footer className="my-5">&copy; 2025 Cinesphere YK</footer>
 
-            {/* searched for this */}
             <style jsx>{`
                 @keyframes fadeIn {
                     from { opacity: 0; }
