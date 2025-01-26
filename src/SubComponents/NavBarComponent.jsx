@@ -1,5 +1,6 @@
 import React from 'react';
 import img from '../assets/animations/logo.gif';
+import LanguageToggle from './LanguageToggle';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { useSelector } from 'react-redux';
 
@@ -31,6 +32,9 @@ function NavBarComponent(props) {
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <LanguageToggle />
+                        </li>
                         <li className="nav-item">
                             <Link className="nav-link" to={props.navLinkPath2}>{props.navLink2}</Link>
                         </li>

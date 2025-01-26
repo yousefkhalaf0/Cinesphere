@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies, fetchGenres } from '../../redux/actions/moviesAction';
+import { useLanguage } from '../../Context/LanguageContext';
 import TitleComponent from '../../SubComponents/TitleComponent';
 import MovieCard from '../../SubComponents/MovieCard';
 import Pagination from '../../SubComponents/Pagination';
@@ -14,19 +15,20 @@ const MoviesPage = () => {
     const dispatch = useDispatch();
     const currentPageMovies = useSelector((state) => state.movies.currentPageMovies);
     const genres = useSelector((state) => state.movies.genres);
+    const { language } = useLanguage();
 
     useEffect(() => {
-        dispatch(fetchGenres());
-    }, [dispatch]);
+        dispatch(fetchGenres(language));
+    }, [dispatch, language]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const totalPagesFromAPI = await dispatch(fetchMovies(page, search, isSearching));
+            const totalPagesFromAPI = await dispatch(fetchMovies(page, search, isSearching, language));
             setTotalPages(totalPagesFromAPI);
         };
 
         fetchData();
-    }, [page, search, isSearching, dispatch]);
+    }, [page, search, isSearching, dispatch, language]);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {

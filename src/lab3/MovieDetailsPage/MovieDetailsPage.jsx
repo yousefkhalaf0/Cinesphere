@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { favouriteAction } from '../../redux/actions/favouriteAction';
+import { useLanguage } from '../../Context/LanguageContext';
 
 function MovieDetailsPage() {
     const id = useParams().id;
@@ -10,23 +11,26 @@ function MovieDetailsPage() {
     const dispatch = useDispatch();
     const favedMovies = useSelector((state) => state.fav.favedMovies);
     const isFaved = favedMovies.includes(Number(id));
+    const { language } = useLanguage();
 
     useEffect(() => {
-        axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=aec7a120efc0f2607c66f43ac96e5187`)
+        axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=aec7a120efc0f2607c66f43ac96e5187&language=${language}`)
             .then((data) => {
                 setDetails(data.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, [id]);
+    }, [id, language]);
 
     const handleFavClick = () => {
         dispatch(favouriteAction(Number(id)));
     };
 
+    const textAlignment = language === 'en' ? 'text-start' : 'text-end';
+
     return (
-        <main className='mt-5' style={{ position: 'relative', height: '100vh' }}>
+        <main dir={language === 'en' ? 'ltr' : 'rtl'} className='mt-5' style={{ position: 'relative', height: '100vh' }}>
             <div className='my-3' style={{
                 backgroundImage: `url(https://image.tmdb.org/t/p/w500/${details.backdrop_path})`,
                 backgroundSize: 'cover',
@@ -40,6 +44,7 @@ function MovieDetailsPage() {
                 zIndex: -1
             }}>
             </div>
+
             <div className='row justify-content-center mx-auto my-3 p-5' style={{
                 background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #343a40 100%)',
                 height: '100%',
@@ -52,12 +57,13 @@ function MovieDetailsPage() {
                 <div className='col-4'>
                     <img src={`https://image.tmdb.org/t/p/w500/${details.poster_path}`} alt={`${details.title}-img`} className='img-fluid rounded' />
                 </div>
-                <div className='col-8 text-white' style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>
+
+                <div className={`col-8 text-white ${textAlignment}`} style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>
                     <h1 className='display-1 mb-5'>{details.title}</h1>
-                    <p className='lead text-start'>{details.overview}</p>
-                    <p className='text-start fs-5'>Tagline: {details.tagline}</p>
+                    <p className='lead'>{details.overview}</p>
+                    <p className='fs-5'>Tagline: {details.tagline}</p>
                     {details.genres && details.genres.length > 0 && (
-                        <div className='text-start'>
+                        <div>
                             <p className='fw-bold fs-5'>Genres:</p>
                             <ul>
                                 {details.genres.map((genre) => (
@@ -66,11 +72,11 @@ function MovieDetailsPage() {
                             </ul>
                         </div>
                     )}
-                    <p className='text-start fs-5'>Release Date: {details.release_date}</p>
-                    <p className='text-start fs-5'>Vote Count: {details.vote_count}</p>
-                    <p className='text-start fs-5'>Rating: {details.vote_average} / 10</p>
-                    <p className='text-start fs-5'>Runtime: {details.runtime} minutes</p>
-                    <p className='text-start fs-5'>Status: {details.status}</p>
+                    <p className='fs-5'>Release Date: {details.release_date}</p>
+                    <p className='fs-5'>Vote Count: {details.vote_count}</p>
+                    <p className='fs-5'>Rating: {details.vote_average} / 10</p>
+                    <p className='fs-5'>Runtime: {details.runtime} minutes</p>
+                    <p className='fs-5'>Status: {details.status}</p>
                 </div>
             </div>
 
@@ -79,7 +85,8 @@ function MovieDetailsPage() {
                 style={{
                     position: 'absolute',
                     top: '35px',
-                    right: '20px',
+                    right: language === 'en' ? '20px' : 'unset',
+                    left: language === 'ar' ? '20px' : 'unset',
                     color: isFaved ? 'red' : 'black',
                     cursor: 'pointer',
                     fontSize: '1.5rem',

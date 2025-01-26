@@ -15,6 +15,15 @@ export default function moviesReducer(state = INITIAL_VALUE, action) {
                 allMovies: [...state.allMovies, ...newMovies],
                 currentPageMovies: action.payload,
             };
+        case "UPDATE_MOVIE_DETAILS":
+            const updatedMovie = action.payload;
+            const updatedMovies = state.allMovies.map((movie) =>
+                movie.id === updatedMovie.id ? updatedMovie : movie
+            );
+            return {
+                ...state,
+                allMovies: updatedMovies,
+            };
         case "SET_CURRENT_PAGE_MOVIES":
             return {
                 ...state,

@@ -21,13 +21,20 @@ export const setGenres = (payload) => {
     };
 };
 
-export const fetchMovies = (page = 1, search = '', isSearching = false) => async (dispatch) => {
+export const updateMovieDetails = (payload) => {
+    return {
+        type: "UPDATE_MOVIE_DETAILS",
+        payload,
+    };
+};
+
+export const fetchMovies = (page = 1, search = '', isSearching = false, language = 'en') => async (dispatch) => {
     const apiKey = 'aec7a120efc0f2607c66f43ac96e5187';
     const baseUrl = 'https://api.themoviedb.org/3/movie/popular';
     const searchUrl = 'https://api.themoviedb.org/3/search/movie';
     const url = isSearching
-        ? `${searchUrl}?api_key=${apiKey}&query=${search}&page=${page}`
-        : `${baseUrl}?api_key=${apiKey}&page=${page}`;
+        ? `${searchUrl}?api_key=${apiKey}&query=${search}&page=${page}&language=${language}`
+        : `${baseUrl}?api_key=${apiKey}&page=${page}&language=${language}`;
 
     try {
         const response = await axios.get(url);
@@ -40,12 +47,28 @@ export const fetchMovies = (page = 1, search = '', isSearching = false) => async
     }
 };
 
-export const fetchGenres = () => async (dispatch) => {
+//searched for this
+export const fetchMovieDetails = (movieId, language = 'en') => async (dispatch) => {
+    const apiKey = 'aec7a120efc0f2607c66f43ac96e5187';
+    const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=${language}`;
+
+    try {
+        const response = await axios.get(url);
+        dispatch(updateMovieDetails({
+            ...response.data,
+            genre_ids: response.data.genres.map(genre => genre.id)
+        }));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const fetchGenres = (language = 'en') => async (dispatch) => {
     const apiKey = 'aec7a120efc0f2607c66f43ac96e5187';
     const genreUrl = 'https://api.themoviedb.org/3/genre/movie/list';
 
     try {
-        const response = await axios.get(`${genreUrl}?api_key=${apiKey}`);
+        const response = await axios.get(`${genreUrl}?api_key=${apiKey}&language=${language}`);
         dispatch(setGenres(response.data.genres));
     } catch (error) {
         console.log(error);
