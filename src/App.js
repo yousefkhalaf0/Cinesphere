@@ -2,6 +2,7 @@ import './App.css';
 import myStore from './redux/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { LanguageProvider } from './Context/LanguageContext';
 import HeroSection from './lab1/HeroSection/HeroSection';
 import BioSection from './lab1/BioSection/BioSection';
 import SkillsSection from './lab1/SkillsSection/SkillsSection';
@@ -14,7 +15,6 @@ import NotFoundPage from './lab3/NotFoundPage';
 import NavBarComponent from './SubComponents/NavBarComponent';
 import MovieDetailsPage from './lab3/MovieDetailsPage/MovieDetailsPage';
 import FavouritePage from './lab3/FavouritePage/FavouritePage';
-import { LanguageProvider } from './Context/LanguageContext';
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
 
           {/* lab3 */}
           <BrowserRouter>
-            <NavBarComponent siteName='CineSphere' navLink2='Login' navLink3='Register' navLinkPath1='/favourites' navLinkPath2='/logIn' navLinkPath3='/register' />
+            <NavBarComponent navLinkPath1='/favourites' navLinkPath2='/logIn' navLinkPath3='/register' />
             <Switch>
               <Route path="/" component={MoviesPage} exact />
               <Route path="/movieDetails/:id" component={MovieDetailsPage} exact />

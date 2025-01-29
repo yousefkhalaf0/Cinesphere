@@ -72,7 +72,7 @@ const MovieCard = (props) => {
                 <div
                     className="card-body text-start mt-2"
                     style={{ position: 'relative', left: '3px' }}>
-                    <h6 className={`card-title fw-bold text-${isHovered ? 'secondary' : 'white'}`}>{props.movieName}</h6>
+                    <h6 className={`card-title fw-bold text-${isHovered ? 'secondary' : props.movieNameClr}`}>{props.movieName}</h6>
                     <small className="text-secondary">{props.releasedYear}</small>
                 </div>
             </Link>

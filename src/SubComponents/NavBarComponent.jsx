@@ -3,17 +3,21 @@ import img from '../assets/animations/logo.gif';
 import LanguageToggle from './LanguageToggle';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { useSelector } from 'react-redux';
+import { useLanguage } from '../Context/LanguageContext';
+import ThemeToggle from './ThemeToggle';
 
 function NavBarComponent(props) {
+    const { language } = useLanguage();
+
     const favedMovies = useSelector((state) => state.fav.favedMovies);
     const favCount = favedMovies.length;
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark border-bottom border-secondary py-0 fixed-top">
+        <nav className={`navbar navbar-expand-lg navbar-dark border-bottom border-secondary py-0 fixed-top`}>
             <div className="container-fluid bg-dark">
                 <Link className="navbar-brand fw-bold" to="/">
                     <img src={img} alt="logo" />
-                    {props.siteName}
+                    {language === 'en' ? 'Cinesphere' : 'المجال السينمائي'}
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -32,14 +36,21 @@ function NavBarComponent(props) {
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                        {/* <li className="nav-item">
+                            <ThemeToggle />
+                        </li> */}
                         <li className="nav-item">
                             <LanguageToggle />
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={props.navLinkPath2}>{props.navLink2}</Link>
+                            <Link className="nav-link" to={props.navLinkPath2}>
+                                {language === 'en' ? 'Login' : 'تسجيل الدخول'}
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={props.navLinkPath3}>{props.navLink3}</Link>
+                            <Link className="nav-link" to={props.navLinkPath3}>
+                                {language === 'en' ? 'Register' : 'إنشاء حساب'}
+                            </Link>
                         </li>
                     </ul>
                 </div>

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { useLanguage } from '../Context/LanguageContext';
 
 const Pagination = (props) => {
+    const { language } = useLanguage();
+
     const handlePrevious = () => {
         if (props.currentPage > 1) {
             props.onPageChange(props.currentPage - 1);
@@ -20,13 +23,13 @@ const Pagination = (props) => {
         for (let i = 1; i <= props.totalPages; i++) {
             if (i === 1 || i === props.totalPages || (i >= props.currentPage - 1 && i <= props.currentPage + 1)) {
                 pageNumbers.push(
-                    <li key={i} className={`page-item ${props.currentPage === i ? 'active' : ''}`}>
+                    <li key={i} className={`bg-${props.bgColor} page-item ${props.currentPage === i ? 'active' : ''}`}>
                         <Link className="page-link" to="#" onClick={() => props.onPageChange(i)}>{i}</Link>
                     </li>
                 );
             } else if (i === props.currentPage - 2 || i === props.currentPage + 2) {
                 pageNumbers.push(
-                    <li key={i} className="page-item disabled">
+                    <li key={i} className={`bg-${props.bgColor} page-item disabled`}>
                         <span className="page-link">...</span>
                     </li>
                 );
@@ -37,12 +40,16 @@ const Pagination = (props) => {
 
     return (
         <ul className={`pagination justify-content-${props.position}`}>
-            <li className={`page-item ${props.currentPage === 1 ? 'disabled' : ''}`}>
-                <Link className="page-link" to="#" onClick={handlePrevious}>Previous</Link>
+            <li className={`bg-${props.bgColor} page-item ${props.currentPage === 1 ? 'disabled' : ''}`}>
+                <Link className="page-link" to="#" onClick={handlePrevious}>
+                    {language == 'en' ? 'Previous' : 'السابق'}
+                </Link>
             </li>
             {renderPageNumbers()}
-            <li className={`page-item ${props.currentPage === props.totalPages ? 'disabled' : ''}`}>
-                <Link className="page-link" to="#" onClick={handleNext}>Next</Link>
+            <li className={`bg-${props.bgColor} page-item ${props.currentPage === props.totalPages ? 'disabled' : ''}`}>
+                <Link className="page-link" to="#" onClick={handleNext}>
+                    {language == 'en' ? 'Next' : 'التالي'}
+                </Link>
             </li>
         </ul>
     );

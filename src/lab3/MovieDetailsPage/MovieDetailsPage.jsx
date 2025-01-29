@@ -61,10 +61,14 @@ function MovieDetailsPage() {
                 <div className={`col-8 text-white ${textAlignment}`} style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>
                     <h1 className='display-1 mb-5'>{details.title}</h1>
                     <p className='lead'>{details.overview}</p>
-                    <p className='fs-5'>Tagline: {details.tagline}</p>
+                    <p className='fs-5'>
+                        {language === 'en' ? 'Tagline: ' + details.tagline : 'العنوان الفرعي: ' + details.tagline}
+                    </p>
                     {details.genres && details.genres.length > 0 && (
                         <div>
-                            <p className='fw-bold fs-5'>Genres:</p>
+                            <p className='fw-bold fs-5'>
+                                {language === 'en' ? 'Genres:' : 'التصنيفات:'}
+                            </p>
                             <ul>
                                 {details.genres.map((genre) => (
                                     <li key={genre.id}>{genre.name}</li>
@@ -72,11 +76,21 @@ function MovieDetailsPage() {
                             </ul>
                         </div>
                     )}
-                    <p className='fs-5'>Release Date: {details.release_date}</p>
-                    <p className='fs-5'>Vote Count: {details.vote_count}</p>
-                    <p className='fs-5'>Rating: {details.vote_average} / 10</p>
-                    <p className='fs-5'>Runtime: {details.runtime} minutes</p>
-                    <p className='fs-5'>Status: {details.status}</p>
+                    <p className='fs-5'>
+                        {language === 'en' ? 'Release Date: ' + details.release_date : 'تاريخ الاصدار: ' + details.release_date}
+                    </p>
+                    <p className='fs-5'>
+                        {language === 'en' ? 'Vote Count: ' + details.vote_count : 'عدد الأصوات: ' + details.vote_count}
+                    </p>
+                    <p className='fs-5'>
+                        {language === 'en' ? 'Rating: ' + details.vote_average + ' / 10' : 'تصنيف: ' + details.vote_average + ' / 10'}
+                    </p>
+                    <p className='fs-5'>
+                        {language === 'en' ? 'Runtime: ' + details.runtime + ' minutes' : 'وقت التشغيل: ' + details.runtime + ' دقيقة'}
+                    </p>
+                    {/* <p className='fs-5'>
+                        {language === 'en' ? 'Status: ' + details.status : 'حالة: ' + details.status}
+                    </p> */}
                 </div>
             </div>
 

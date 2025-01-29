@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useLanguage } from "../Context/LanguageContext";
 import TitleComponent from "../SubComponents/TitleComponent";
 
 function SignUp() {
+    const { language } = useLanguage();
 
     const [userUpData, setUserUpData] = useState({
         name: null,
@@ -83,10 +85,12 @@ function SignUp() {
 
     return (
         <section className="border rounded p-5 mb-5 w-50 mx-auto" style={{ marginTop: "150px" }}>
-            <TitleComponent title="Register" textColor="primary" margin="mb-5" />
+            <TitleComponent title={language == 'en' ? "Register" : 'إنشاء حساب'} textColor="primary" margin="mb-5" />
             <form onSubmit={(e) => submitForm(e)}>
-                <div className="mb-3 text-start">
-                    <label htmlFor="inputName" className="form-label fw-bold fs-5">Name</label>
+                <div className={`mb-3 text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="inputName" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'Name' : ' الاسم'}
+                    </label>
                     <input id="inputName" required type="text"
                         className={`form-control ${errorsMsgUp.nameError == null ? "form-control" : errorsMsgUp.nameError ? "is-invalid" : "is-valid"}`}
                         value={userUpData.name}
@@ -94,8 +98,10 @@ function SignUp() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text">{errorsMsgUp.nameError}</p>
                 </div>
-                <div className="mb-3 text-start">
-                    <label htmlFor="inputEmail" className="form-label fw-bold fs-5">Email Address</label>
+                <div className={`mb-3 text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="inputEmail" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'Email Address' : 'البريد الالكتروني'}
+                    </label>
                     <input id="inputEmail" required type="email"
                         className={`form-control ${errorsMsgUp.emailError == null ? "form-control" : errorsMsgUp.emailError ? "is-invalid" : "is-valid"}`}
                         value={userUpData.email}
@@ -103,8 +109,10 @@ function SignUp() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text">{errorsMsgUp.emailError}</p>
                 </div>
-                <div className="mb-3 text-start">
-                    <label htmlFor="userName" className="form-label fw-bold fs-5">User Name</label>
+                <div className={`mb-3 text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="userName" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'User Name' : 'اسم المستخدم'}
+                    </label>
                     <input id="userName" required type="text"
                         className={`form-control ${errorsMsgUp.usrNameError == null ? "form-control" : errorsMsgUp.usrNameError ? "is-invalid" : "is-valid"}`}
                         value={userUpData.usrName}
@@ -112,8 +120,10 @@ function SignUp() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text">{errorsMsgUp.usrNameError}</p>
                 </div>
-                <div className="mb-3 text-start">
-                    <label htmlFor="inputPassword" className="form-label fw-bold fs-5">Password</label>
+                <div className={`mb-3 text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="inputPassword" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'Password' : 'كلمة المرور'}
+                    </label>
                     <input id="inputPassword" required type="password"
                         className={`form-control ${errorsMsgUp.passwordError == null ? "form-control" : errorsMsgUp.passwordError ? "is-invalid" : "is-valid"}`}
                         value={userUpData.password}
@@ -121,8 +131,10 @@ function SignUp() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text">{errorsMsgUp.passwordError}</p>
                 </div>
-                <div className="mb-3 text-start">
-                    <label htmlFor="inputPasswordConf" className="form-label fw-bold fs-5">Confirm Password</label>
+                <div className={`mb-3 text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="inputPasswordConf" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'Confirm Password' : ' تأكيد كلمة المرور'}
+                    </label>
                     <input id="inputPasswordConf" required type="password"
                         className={`form-control ${errorsMsgUp.confPasswordError == null ? "form-control" : errorsMsgUp.confPasswordError ? "is-invalid" : "is-valid"}`}
                         value={userUpData.confPassword}
@@ -130,7 +142,9 @@ function SignUp() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text">{errorsMsgUp.confPasswordError}</p>
                 </div>
-                <button type="submit" className="btn btn-primary mt-5 w-25">Register</button>
+                <button type="submit" className="btn btn-primary mt-5 w-25">
+                    {language == 'en' ? "Register" : 'إنشاء حساب'}
+                </button>
             </form>
         </section>
     );

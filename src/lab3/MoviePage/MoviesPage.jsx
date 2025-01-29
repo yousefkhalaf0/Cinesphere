@@ -15,6 +15,7 @@ const MoviesPage = () => {
     const dispatch = useDispatch();
     const currentPageMovies = useSelector((state) => state.movies.currentPageMovies);
     const genres = useSelector((state) => state.movies.genres);
+    const currentTheme = useSelector((state) => state.theme.theme);
     const { language } = useLanguage();
 
     useEffect(() => {
@@ -64,26 +65,28 @@ const MoviesPage = () => {
                         borderRadius: '10px',
                         animation: 'fadeIn 2s ease-in-out'
                     }}>
-                    <h1 className="fs-3 mb-2">Welcome to Cinesphere</h1>
-                    <p className="fs-5">Discover the latest movies</p>
+                    <h1 className="fs-3 mb-2">{language == 'en' ? 'Welcome to Cinesphere' : 'مرحباً بكم في موقع المجال السنيمائي'}</h1>
+                    <p className="fs-5">{language == 'en' ? 'Discover the latest movies' : 'اكتشف أحدث الأفلام'}</p>
                     <a
                         href="#titleComponent"
                         className="btn btn-primary mt-2"
                         onMouseEnter={(e) => e.target.style.backgroundColor = '#0056b3'}
                         onMouseLeave={(e) => e.target.style.backgroundColor = '#007bff'}>
-                        Go to Movies
+                        {language == 'en' ? 'Go to Movies' : 'انتقل إلى الأفلام'}
                     </a>
                 </div>
             </header>
-            <TitleComponent id='titleComponent' title="Cinesphere Movies" textColor="primary" margin="m-5" />
+            <TitleComponent id='titleComponent' title={`${language == 'en' ? "Cinesphere Movies" : 'الأفلام'}`} textColor="primary" margin="m-5" />
             <main className='row mx-auto justify-content-center'>
                 <input
                     type="text"
-                    className="form-control mb-4 w-75"
-                    placeholder="Search for a movie..."
+                    className={`form-control mb-4 w-75 `}
+                    placeholder={language == 'en' ? 'Search for a movie...' : 'ابحث عن فيلم...'}
+                    dir={language == 'en' ? 'ltr' : 'rtl'}
                     value={search}
                     onChange={handleSearchChange} />
                 <Pagination
+                    // bgColor={currentTheme === 'light' ? 'dark' : 'light'}
                     position="center"
                     currentPage={page}
                     totalPages={Math.min(totalPages, 500)}
@@ -91,7 +94,8 @@ const MoviesPage = () => {
                 {currentPageMovies.map(movie => (
                     <MovieCard
                         key={movie.id}
-                        borderClr='white'
+                        borderClr={currentTheme === 'light' ? 'dark' : 'light'}
+                        movieNameClr={currentTheme === 'light' ? 'dark' : 'light'}
                         imgPath={movie.poster_path}
                         movieName={movie.title}
                         movieRate={movie.vote_average}

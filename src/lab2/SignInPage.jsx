@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useLanguage } from "../Context/LanguageContext";
 import TitleComponent from "../SubComponents/TitleComponent";
 
 function SignIn() {
+    const { language } = useLanguage();
+
     const [userInData, setUserInData] = useState({
         email: null,
         password: null
@@ -42,10 +45,12 @@ function SignIn() {
 
     return (
         <section className="border rounded p-5 mb-5 w-50 mx-auto" style={{ marginTop: "150px" }}>
-            <TitleComponent title="Login" textColor="primary" margin="mb-5" />
+            <TitleComponent title={language == 'en' ? 'Login' : 'تسجيل الدخول'} textColor="primary" margin="mb-5" />
             <form onSubmit={(e) => submitForm(e)}>
-                <div className="mb-3 text-start">
-                    <label htmlFor="inputEmail" className="form-label fw-bold fs-5">Email Address</label>
+                <div className={`mb-3 text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="inputEmail" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'Email Address' : 'البريد الالكتروني'}
+                    </label>
                     <input id="inputEmail" required type="email"
                         className={`form-control ${errorsMsgIn.emailError == null ? "form-control" : errorsMsgIn.emailError ? "is-invalid" : "is-valid"}`}
                         value={userInData.email}
@@ -53,8 +58,10 @@ function SignIn() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text text-danger">{errorsMsgIn.emailError}</p>
                 </div>
-                <div className="text-start">
-                    <label htmlFor="inputPassword" className="form-label fw-bold fs-5">Password</label>
+                <div className={`text-${language == 'en' ? 'start' : 'end'}`}>
+                    <label htmlFor="inputPassword" className="form-label fw-bold fs-5">
+                        {language == 'en' ? 'Password' : 'كلمة المرور'}
+                    </label>
                     <input id="inputPassword" required type="password"
                         className={`form-control ${errorsMsgIn.passwordError == null ? "form-control" : errorsMsgIn.passwordError ? "is-invalid" : "is-valid"}`}
                         value={userInData.password}
@@ -62,7 +69,9 @@ function SignIn() {
                         onChange={(e) => handleData(e)} />
                     <p className="form-text text-danger">{errorsMsgIn.passwordError}</p>
                 </div>
-                <button type="submit" className="btn btn-primary mt-5 w-25">Login</button>
+                <button type="submit" className="btn btn-primary mt-5 w-25">
+                    {language == 'en' ? 'Login' : 'تسجيل الدخول'}
+                </button>
             </form>
         </section>
     );
